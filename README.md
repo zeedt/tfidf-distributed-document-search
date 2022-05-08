@@ -132,3 +132,14 @@ Not : The service registry znode `service_registry` must be created before start
     }
 ]
 `
+
+### Application Set-up
+
+The two modules `distributed-document-search-tfidf` and `distributed-search-entry` are springboot applications. The requirement to start this application are:
+
+1. Zookeeper
+2. Intellij
+3. Maven
+
+Multiple instances of `distributed-document-search-tfidf` (minimum of 2 on different ports because one will be for coordination) service should be instantiated and a single 
+instance of the `distributed-search-entry` should be instantiated.
