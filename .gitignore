@@ -10,6 +10,10 @@
 *.iws
 *.iml
 *.ipr
+**/.mvn
+
+**/.DS_Store
+.DS_Store
 
 ./distributed-document-search-tfidf/.idea
 ./distributed-document-search-tfidf/*.iws
