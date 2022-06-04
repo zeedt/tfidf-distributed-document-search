@@ -39,7 +39,7 @@ public class SearchController {
 
     @PostMapping
     public List<DocumentScore> getDocumentScore(@RequestBody SearchRequest searchRequest) throws IOException {
-        File file = resourceLoader.getResource(documentPath).getFile();
+        File file = new File(documentPath);
         List<String> filePaths = new ArrayList<>();
         for (String path:file.list()) {
             filePaths.add(String.format("%s/%s", file.getPath(), path));
@@ -60,7 +60,7 @@ public class SearchController {
     public List<DocumentScore> getDocumentScoreWithDistributedSearch(@RequestBody SearchRequest searchRequest) throws IOException {
         // Divide work
         LOGGER.info("The coordinator handling the job with document path " + documentPath);
-        File file = resourceLoader.getResource(documentPath).getFile();
+        File file = new File(documentPath);
         List<String> filePaths = new ArrayList<>();
         for (String path:file.list()) {
             filePaths.add(String.format("%s/%s", file.getPath(), path));
