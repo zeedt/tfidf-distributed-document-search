@@ -119,7 +119,9 @@ public class TFIDF {
         for (Double score:scoreTreeMap.descendingKeySet()) {
             List<String> documentNames = scoreTreeMap.get(score);
             documentNames.forEach(d-> {
-                documentScores.add(new DocumentScore(d, score));
+                String[] splittedName = d.split("/");
+                String name = splittedName.length > 1 ? splittedName[splittedName.length-1] : d;
+                documentScores.add(new DocumentScore(name, score));
             });
         }
         return documentScores;

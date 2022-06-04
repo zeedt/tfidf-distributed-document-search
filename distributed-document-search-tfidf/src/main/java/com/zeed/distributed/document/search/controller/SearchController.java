@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +30,19 @@ public class SearchController {
     @Autowired
     private TFIDF tfidf;
 
+    @Autowired
+    ResourceLoader resourceLoader;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @PostMapping
     public List<DocumentScore> getDocumentScore(@RequestBody SearchRequest searchRequest) throws IOException {
-        File file = new File(documentPath);
+        File file = resourceLoader.getResource(documentPath).getFile();
         List<String> filePaths = new ArrayList<>();
         for (String path:file.list()) {
-            filePaths.add(String.format("%s/%s", documentPath, path));
+            filePaths.add(String.format("%s/%s", file.getPath(), path));
         }
         TFIDF tfidf = new TFIDF();
         return tfidf.getTermFrequencyInverseDocumentFrequencyScoreFromAllDocuments(filePaths, searchRequest.getSearchWords());
@@ -56,10 +60,10 @@ public class SearchController {
     public List<DocumentScore> getDocumentScoreWithDistributedSearch(@RequestBody SearchRequest searchRequest) throws IOException {
         // Divide work
         LOGGER.info("The coordinator handling the job with document path " + documentPath);
-        File file = new File(documentPath);
+        File file = resourceLoader.getResource(documentPath).getFile();
         List<String> filePaths = new ArrayList<>();
         for (String path:file.list()) {
-            filePaths.add(String.format("%s/%s", documentPath, path));
+            filePaths.add(String.format("%s/%s", file.getPath(), path));
         }
         return tfidf.getTermFrequencyInverseDocumentFrequencyScoreFromAllDocumentsWithDistributedSearch(
                 filePaths, searchRequest.getSearchWords());

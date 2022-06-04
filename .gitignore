@@ -24,3 +24,5 @@
 ./distributed-search-entry/target/*.iws
 ./distributed-search-entry/target/*.iml
 ./distributed-search-entry/target/*.ipr
+
+./distributed-document-search-tfidf/src/main/resources/books/**
